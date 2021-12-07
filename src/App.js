@@ -1,5 +1,38 @@
 import './App.css';
 
+function ProductTable( { products }) {
+    const rows = [];
+    let lastCategory = null;
+
+    products.forEach((product) => {
+        if (product.category !== lastCategory) {
+            rows.push(
+                <ProductCategoryRow
+                    category={product.category}
+                    key={product.category} />
+            );
+        }
+        rows.push(
+            <ProductRow
+                product={product}
+                key={product.name} />
+        );
+        lastCategory = product.category;
+    });
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+        </table>
+    );
+}
+
 function SearchBar() {
   return (
     <form>
@@ -13,11 +46,11 @@ function SearchBar() {
   );
 }
 
-function FilterableProductTable() {
+function FilterableProductTable( { products }) {
   return (
     <div>
-      <h1>Groovy!!!</h1>
       <SearchBar />
+        <ProductTable products={products} />
     </div>
   )
 }
@@ -32,7 +65,7 @@ const PRODUCTS = [
 ];
 
 export default function App() {
-  return <FilterableProductTable />
+  return <FilterableProductTable products={PRODUCTS}/>
 }
 
 {/* Ended at step 2. Build a static version in React */}
